@@ -1,0 +1,149 @@
+<center><h1 id="demo">PS Project</h1></center>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.container {
+        width: 33%;
+        height: 50%;
+    }
+    .aParent div {
+    float: left;
+    clear: none; 
+    padding-top: 2%;
+}
+.aChild div {
+    float: left;
+    clear: none; 
+    padding:50%;
+    
+}
+.center {
+  margin: auto;
+  width: 7%;
+  margin-left: 13%;
+  margin-right: 13%;
+}
+
+.header{
+    overflow: hidden;
+  background-color: #f1f1f1;
+  padding: 10px 10px;
+
+}
+</style>
+</head>
+<body>
+
+<h2>Output Table</h2>
+
+<table>
+  <tr>
+    <th>Commands</th>
+    <th>Output</th>
+  
+  </tr>
+  <tr>
+    <td>ls</td>
+    <td id="ls" >Initial output</td>
+  
+  </tr>
+  <tr>
+    <td>ls -la</td>
+    <td id= "lsla" >Initial output</td>
+   
+  </tr>
+ 
+</table>
+
+<div class="header">
+        <div class="aChild">
+            <button id="cpuBtn" class="center">
+                CPU
+            </button>
+            <button id="memBtn" class="center">
+                Memory
+            </button>
+            <button id="dbBtn" class="center">
+                DB Trend
+            </button>
+        </div>
+    </div>
+    <div class="aParent">
+        <div class="container">
+            <canvas id="cpu"></canvas>
+        </div>
+        <div class="container">
+            <canvas id="mem"></canvas>
+        </div>
+        <div class="container">
+            <canvas id="dbtrend"></canvas>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+function doRunls() {
+
+    console.log("executed ls");
+    axios({
+    method: 'get',
+    // baseURL: window.location.origin,
+    url: 'http://127.0.0.1:8000/ls',
+
+    // responseType: 'json',
+})
+    .then(function (response) {
+       
+        document.getElementById("ls").innerHTML = response.data;
+        console.log(response);
+    })
+
+    .catch(function (error) {
+        console.log(' error=', error.message);
+    });
+}
+function doRunlsla() {
+    console.log("executed ls -la");
+    axios({
+    method: 'get',
+    // baseURL: window.location.origin,
+    url: 'http://127.0.0.1:8000/lsla',
+
+    // responseType: 'json',
+})
+    .then(function (response) {
+       
+        document.getElementById("lsla").innerHTML = response.data;
+        console.log(response);
+    })
+
+    .catch(function (error) {
+        console.log(' error=', error.message);
+    });
+}
+// doSomething();
+setInterval(doRunls, 5000);
+setInterval(doRunlsla, 5000);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
