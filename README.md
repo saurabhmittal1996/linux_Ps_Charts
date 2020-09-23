@@ -32,4 +32,5 @@ Ta-da! The charts should update every minute. Don't want to wait that long? pres
 * CPU usage and Memory consumption are not random anymore!
 * Limited maximum no. of labels on x-axis to 5 to avoid crowding. Data labels are still visible on hovering
 * Labels are current datetime displayed in `HH:MM:SS` format
+* Buttons update charts
  
