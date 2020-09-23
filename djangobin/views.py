@@ -26,7 +26,21 @@ def runcommand2(request):
     return HttpResponse(process.stdout)
 
 def cpu(request):
-    #TO DO: Returns a random number that may or may not be cpu usage :)
+    #TO DO
+    import psutil
+    #import random
+    #return HttpResponse(random.randint(0,100));
+    return HttpResponse(psutil.cpu_percent());
+
+def mem(request):
+    #TO DO
+    import psutil
+    #import random
+    #return HttpResponse(random.randint(0,100));
+    return HttpResponse(psutil.virtual_memory().percent);
+
+def db(request):
+    #TO DO: Returns a random number that may or may not be db trend :)
     import random
     return HttpResponse(random.randint(0,100));
 
