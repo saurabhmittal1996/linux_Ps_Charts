@@ -23,5 +23,7 @@ urlpatterns = [
     url(r'^lsla/', views.runcommand2), #For executing second command - localhost:8000/lsla
     url(r'^admin/', admin.site.urls),
     url(r'^cpu/', views.cpu),
+    url(r'^mem/', views.mem),
+    url(r'^db/', views.db),
 
 ]
