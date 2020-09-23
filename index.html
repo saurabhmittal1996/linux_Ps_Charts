@@ -12,6 +12,7 @@
     .container {
         width: 33%;
         height: 50%;
+        border: 1px;
     }
     .aParent div {
     float: left;
@@ -37,18 +38,31 @@
   padding: 10px 10px;
 
 }
+
+#cpu{
+    border-color: #5dbcd2;
+}
+
+#mem{
+    border-color: #cd9dda;
+}
+
+#db{
+    border-color: #afd791;
+}
+
 </style>
 <body>
 
     <div class="header">
         <div class="aChild">
-            <button id="cpuBtn" class="center">
+            <button id="cpuBtn" class="center" onclick="getNewData(cpuChart,'cpu')">
                 CPU
             </button>
-            <button id="memBtn" class="center">
+            <button id="memBtn" class="center" onclick="getNewData(memChart,'mem')">
                 Memory
             </button>
-            <button id="dbBtn" class="center">
+            <button id="dbBtn" class="center" onclick="getNewData(dbChart,'db')">
                 DB Trend
             </button>
         </div>
@@ -70,5 +84,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="./myChart.js"></script>
+
 
 </html>

@@ -1,19 +1,21 @@
-function cpuChart(data, labels, ele) {
-    
-}
-
 var cdata = [10,15,12,1];
-var clabel = ["12:00", "12:01", "12:02", "12:03"];
+var clabel = ["0", "1", "2", "3"];
+var mdata = [10,15,12,1];
+var mlabel = ["0", "1", "2", "3"];
+var ddata = [10,15,12,1];
+var dlabel = ["0", "1", "2", "3"];
 
 var ctx = document.getElementById("cpu").getContext('2d');
-    var myChart1 = new Chart(ctx, {
+    var cpuChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: clabel,
             datasets: [{
                 data: cdata,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(93, 188, 210, 1)',
+                backgroundColor: 'rgba(93, 188, 210, 0.2)',
+                borderWidth:1,
+                pointRadius:0.5,
             }]
         },
         options: {            
@@ -22,6 +24,13 @@ var ctx = document.getElementById("cpu").getContext('2d');
                     ticks: {
                         beginAtZero: true,  //{}
                     }
+                }],
+                xAxes: [{
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 5,
+                        maxRotation: 0,
+                    }
                 }]                
             },
             legend:{
@@ -29,37 +38,18 @@ var ctx = document.getElementById("cpu").getContext('2d');
             },
         },
     });
-    function updateCpu(){
-    axios({
-    method: 'get',
-    // baseURL: window.location.origin,
-    url: 'http://127.0.0.1:8000/cpu',
-
-    // responseType: 'json',
-})
-    .then(function (response) {
-       
-        myChart1.data.datasets[0].data.push(response.data);
-        myChart1.data.labels.push(new Date().getSeconds());
-        myChart1.update();
-        console.log(response);
-    })
-
-    .catch(function (error) {
-        console.log(' error=', error.message);
-    });
-};
-
 
 var ctx = document.getElementById("mem").getContext('2d');
-    var myChart2 = new Chart(ctx, {
+    var memChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: clabel,
+            labels: mlabel,
             datasets: [{
-                data: cdata,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                data: mdata,
+                borderColor: 'rgba(205,157,218, 1)',
+                backgroundColor: 'rgba(205,157,218, 0.2)',
+                borderWidth:1,
+                pointRadius:0.5,
             }]
         },
         options: {            
@@ -68,43 +58,32 @@ var ctx = document.getElementById("mem").getContext('2d');
                     ticks: {
                         beginAtZero: true,  //{}
                     }
-                }]                
+                }],
+                xAxes: [{
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 5,
+                        maxRotation: 0,
+                    }
+                }]                   
             },
             legend:{
                 display: false
             },
         },
     });
-    function updateMem(){
-    axios({
-    method: 'get',
-    // baseURL: window.location.origin,
-    url: 'http://127.0.0.1:8000/cpu',
-
-    // responseType: 'json',
-})
-    .then(function (response) {
-       
-        myChart2.data.datasets[0].data.push(response.data);
-        myChart2.data.labels.push(new Date().getSeconds());
-        myChart2.update();
-        console.log(response);
-    })
-
-    .catch(function (error) {
-        console.log(' error=', error.message);
-    });
-};
 
 var ctx = document.getElementById("dbtrend").getContext('2d');
-    var myChart3 = new Chart(ctx, {
+    var dbChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: clabel,
+            labels: dlabel,
             datasets: [{
-                data: cdata,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                data: ddata,
+                borderColor: 'rgba(175,215,145, 1)',
+                backgroundColor: 'rgba(175,215,145, 0.2)',
+                borderWidth:1,
+                pointRadius:0.5,
             }]
         },
         options: {            
@@ -113,62 +92,76 @@ var ctx = document.getElementById("dbtrend").getContext('2d');
                     ticks: {
                         beginAtZero: true,  //{}
                     }
-                }]                
+                }],
+                xAxes: [{
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 5,
+                        maxRotation: 0,
+                    }
+                }]                   
             },
             legend:{
                 display: false
             },
         },
     });
-    function updateDB(){
-    axios({
-    method: 'get',
-    // baseURL: window.location.origin,
-    url: 'http://127.0.0.1:8000/cpu',
 
-    // responseType: 'json',
-})
-    .then(function (response) {
-       
-        myChart3.data.datasets[0].data.push(response.data);
-        myChart3.data.labels.push(new Date().getSeconds());
-        myChart3.update();
-        console.log(response);
+
+function getNewData(chart, src){
+    axios({
+        method: 'get',
+        // baseURL: window.location.origin,
+        url: 'http://127.0.0.1:8000/'+src,
+
+        // responseType: 'json',
+    })
+
+    .then(function (getresponse){
+        //console.log(response);
+        var d = new Date();
+        chart.data.datasets[0].data.push(getresponse.data);
+        chart.data.labels.push(d.getHours()+':'+d.getMinutes()+':'+d.getSeconds());
+        chart.update();
     })
 
     .catch(function (error) {
         console.log(' error=', error.message);
+
+        //dbChart.data.datasets[0].data.push(response.data);
+        //dbChart.data.labels.push(new Date().getSeconds());
+        //dbChart.update();
+        //console.log(response);
     });
 };
 
-    setInterval(function() {
-        updateCpu();
-        updateMem();
-        updateDB();
-        
-    }, 1000
-        );
+function setInitDate(){
+    var d = new Date();
+    cpuChart.data.datasets[0].data.unshift(0);
+    cpuChart.data.labels.unshift(d.getHours()+':'+d.getMinutes()+':'+d.getSeconds());
+    cpuChart.update();
 
-$("#cpuBtn").click(
-    function () {
-        data = [20, 14, 12, 15, 18, 70, 65];
-        labels =  ["12:00","12:01","12:02", "12:03", "12:04", "12:05", "12:06"];
-        cpuChart(data, labels, "cpu");
-    }
-);
+    memChart.data.datasets[0].data.unshift(0);
+    memChart.data.labels.unshift(d.getHours()+':'+d.getMinutes()+':'+d.getSeconds());
+    memChart.update();
 
-$("#memBtn").click(
-    function () {
-        data = [20, 14, 12, 15, 18, 70, 65];
-        labels =  ["12:00","12:01","12:02", "12:03", "12:04", "12:05", "12:06"];
-        cpuChart(data, labels,"mem");
-    }
-);
+    dbChart.data.datasets[0].data.unshift(0);
+    dbChart.data.labels.unshift(d.getHours()+':'+d.getMinutes()+':'+d.getSeconds());
+    dbChart.update();
+};
 
-$("#dbBtn").click(
-    function () {
-        data = [20, 14, 12, 15, 18, 70, 65];
-        labels =  ["12:00","12:01","12:02", "12:03", "12:04", "12:05", "12:06"];
-        cpuChart(data, labels,"dbtrend");
-    }
+// function updateChart(chart, data){
+//     chart.data.datasets[0].data.push(data);
+//     chart.data.labels.push(new Date().getSeconds());
+//     chart.update();
+// };
+setInitDate();
+
+setInterval(function() {
+        getNewData(cpuChart,"cpu");
+        getNewData(memChart,"mem");
+        getNewData(dbChart,"db");
+        //updateChart(memChart, getNewData("mem"));
+        // updateChart(dbChart, getNewData("db"));
+    }, 60000
 );
